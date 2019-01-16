@@ -1,7 +1,11 @@
 
 <script>
 import template from '../templates/about.slim'
+import Game from './Game'
 export default {
+  components: {
+    'game': Game
+  },
   mixins: [template],
   data () {
     return {
@@ -24,11 +28,8 @@ export default {
     border-bottom: none
     width: 30%
     height: 100%
-    #spacegame
-      width: 100%
-      height: 100%
   .content
-    width: 50%
+    width: 70%
     article
       text-align: right
       .text
