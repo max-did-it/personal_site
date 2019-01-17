@@ -30,6 +30,12 @@ body
   background: black
   padding: 0
   margin: 0
+
+* 
+  -moz-user-select: none
+  -ms-user-select: none
+  -o-user-select: none
+  -webkit-user-select: none
 .test
   height: 50vh
 #app 
