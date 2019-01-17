@@ -11,6 +11,7 @@ import MeteorFrame1 from "../assets/Game/Meteor-Frame1.png"
 import MeteorFrame2 from "../assets/Game/Meteor-Frame2.png"
 import MeteorFrame3 from "../assets/Game/Meteor-Frame3.png"
 import MeteorFrame4 from "../assets/Game/Meteor-Frame4.png"
+import MeteorFrame5 from "../assets/Game/Meteor-Frame5.png"
 import BulletFrame from "../assets/Game/Shot-Frame.png"
 import pixel from "../assets/Game/pixel.png"
 export default {
@@ -28,7 +29,7 @@ export default {
         this.canvas = game.canvas
         this.image = new Image()
         this.image.src = pixel
-        this.ratioSize = 0.1
+        this.ratioSize = 0.18
 
         let object = this
         this.image.onload = function () {          
@@ -54,9 +55,9 @@ export default {
     }
 
     class Bullet extends Picture{ 
-      constructor(game, parent, inx ,speed) {
+      constructor(game, parent, name ,speed) {
         super(game)
-        this.inx = inx
+        this.name = name
         this.parent = parent
         this.speed = speed || 8
         this.ratioSize = parent.ratioSize/3
@@ -74,30 +75,24 @@ export default {
       }
       
       stopBullet() {
-        console.log("Interval " + this.path);
-        
         clearInterval(this.path)
-        this.game.removeBullet(this.inx)
+        this.game.removeBullet(this.name)
       }
     }
 
     class Meteor extends Picture {
-      constructor() {
+      constructor(game, name) {
         super(game)
-        while (true) {
-          
-          let name = "Metheor" + Math.round(Math.random() * 40)
-          console.log("name selecting: " + name);
-          if (!game.meteors[name] ) break
-        }
         this.name = name
         this.currentFrameinx = 0
         frames = [
           MeteorFrame1,
           MeteorFrame2,
           MeteorFrame3,
-          MeteorFrame4
+          MeteorFrame4,
+          MeteorFrame5
         ]
+        this.framesCount = frames.length - 1
         this.images = []
         for (const inx in frames) {
           if (frames.hasOwnProperty(inx)) {
@@ -108,25 +103,44 @@ export default {
           }
         }
         this.setCurrentImage()
-
+        this.flag = true
         this.path = setInterval(() => {
           this.y += 1
-          if ((this.y + this.height) > this.canvas.height) {this.stopMeteor()}
+
+          // Check battleground bottom border
+          if ((this.y - this.height) > this.canvas.height) {this.stopMeteor()}
+
+          // Check collision with bullet
           for (const inx in this.game.bullets) {
             if (this.game.bullets.hasOwnProperty(inx)) {
               const bullet = this.game.bullets[inx];
-              if (bullet.x >= (this.x) && bullet.x <= (this.x + this.width)) {
-                if (bullet.y >= (this.y) && bullet.y <= (this.y + this.height)) {
+              
+              let bx1 = bullet.x, 
+                  bx2 = bullet.x + bullet.width,
+                  by1 = bullet.y,
+                  by2 = bullet.y + bullet.height
+              
+              let mx1 = this.x,
+                  mx2 = this.x + this.width,
+                  my1 = this.y,
+                  my2 = this.y + this.height
+              
+              let conditionX = ((bx1 >= mx1) && (bx1 <= mx2)) || ((bx2 <= mx2) && (bx2 >= mx1))
+              let conditionY = ((by1 <= my2 ) && (by1 >= my1)) || ((by2 <= my2) && (by2 >= my1))
+              if (conditionY && conditionX) {
+                this.game.removeBullet(inx)
+                if (this.currentFrameinx < this.framesCount) { 
                   this.currentFrameinx += 1
                   this.setCurrentImage()
-                }
+                } else {this.stopMeteor(inx)}
               }
             }
           }
-        }, 10);
+        }, 1);
       }
       setCurrentImage() {
         this.image = this.images[this.currentFrameinx]
+        
       }
 
       initXY(obj) {
@@ -137,6 +151,7 @@ export default {
 
       stopMeteor() {
         clearInterval(this.path)
+        this.path = undefined
         this.game.removeMeteor(this.name)
       }
     }
@@ -168,12 +183,12 @@ export default {
 
       initXY(obj) {
         let object = this || obj
-        object.x = object.canvas.width/2 - object.width/2
+        object.x = object.canvas.width/2 - object.width/3
         object.y = object.canvas.height - object.height - 10
       }
 
       setPosition(x) {
-        this.x = x - this.width/2 
+        this.x  = x
       }
 
       shoot() {
@@ -188,28 +203,34 @@ export default {
         this.context = context
         this.ship = new Spaceship(this)
         this.meteors = {}
+        this.meteorsCount = 0
+        this.bulletsCount = 0
         this.bullets = []
       }
 
       addMeteor() {
-        console.log("Meteor created");
-        
-        let a = new Meteor(this)
-        this.meteors[a.name] = a
+        this.meteorsCount += 1
+        name = "Meteor" + this.meteorsCount
+        this.meteors[name] = new Meteor(this, name)
       }
 
       addBullet() {
-        
-        this.bullets.push(new Bullet(this, this.ship, this.bullets.length))
-        console.log(this.bullets);
+        this.bulletsCount += 1
+        name = "Bullet" + this.bulletsCount
+        this.bullets[name] = new Bullet(this, this.ship, name)
       }
 
       removeMeteor(name) {
+        // this.meteorsCount -= 1
+        this.meteors[name].x = undefined
+        this.meteors[name].y = undefined
         delete this.meteors[name]
       }
 
-      removeBullet(inx) {
-        this.bullets.shift()
+      removeBullet(name) {
+        this.bullets[name].x = undefined
+        this.bullets[name].y = undefined
+        delete this.bullets[name]
       }
     }
 
