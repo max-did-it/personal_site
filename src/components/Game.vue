@@ -13,29 +13,43 @@ import MeteorFrame3 from "../assets/Game/Meteor-Frame3.png"
 import MeteorFrame4 from "../assets/Game/Meteor-Frame4.png"
 import MeteorFrame5 from "../assets/Game/Meteor-Frame5.png"
 import BulletFrame from "../assets/Game/Shot-Frame.png"
+import PlayButtonFrame from "../assets/Game/Play-Button.png"
+import GameFont from "../assets/Game/GameFont.ttf"
 import pixel from "../assets/Game/pixel.png"
 export default {
   mounted() {
     let canvas = document.getElementById("spacegame")
-    canvas.style.cursor = "none"
     canvas.width = window.innerWidth/3
     canvas.height = window.innerHeight
     let context = canvas.getContext("2d")
-
-
+    let requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+      window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
+    let startMeteorGenerator = true
+    let font = new FontFace('PixelFont', GameFont)
+    console.log(font);
+    
+    font.onload = function (event) {
+      document.fonts.add(font)
+      context.font='15px PixelFont'
+      console.log("here");
+      
+    }
     class Picture {
-      constructor(game) {
+      constructor(game, image, ratio, x, y) {
         this.game = game
         this.canvas = game.canvas
-        this.image = new Image()
-        this.image.src = pixel
-        this.ratioSize = 0.18
+        if (!image && true) {
+          this.image = new Image()
+          this.image.src = pixel
+        } else {
+          this.image = image
+        }
+        this.ratioSize = ratio || 0.18
 
         let object = this
         this.image.onload = function () {          
           object.initSize(object)
           object.initXY(object)
-          draw()
       } 
       }
 
@@ -45,10 +59,10 @@ export default {
           object.height = object.width*(object.image.height/object.image.width)
       }
 
-      initXY(obj) {
+      initXY(obj, x, y) {
         let object = this || obj 
-        object.x = 0
-        object.y = 0
+        object.x = x || (object.game.canvas.width/2 - object.width/2)
+        object.y = y || (object.game.canvas.height/2 - object.height/2)
       }
 
 
@@ -132,7 +146,10 @@ export default {
                 if (this.currentFrameinx < this.framesCount) { 
                   this.currentFrameinx += 1
                   this.setCurrentImage()
-                } else {this.stopMeteor(inx)}
+                } else {
+                  this.stopMeteor(inx)
+                  this.game.score += 10
+                }
               }
             }
           }
@@ -184,7 +201,7 @@ export default {
       initXY(obj) {
         let object = this || obj
         object.x = object.canvas.width/2 - object.width/3
-        object.y = object.canvas.height - object.height - 10
+        object.y = object.canvas.height - object.height - object.canvas.height*0.1
       }
 
       setPosition(x) {
@@ -201,11 +218,21 @@ export default {
       constructor(canvas, context) {
         this.canvas = canvas
         this.context = context
-        this.ship = new Spaceship(this)
         this.meteors = {}
         this.meteorsCount = 0
         this.bulletsCount = 0
         this.bullets = []
+        this.playing = false
+        this.score = 0
+        let image = new Image()
+        image.src = PlayButtonFrame
+        this.playButton = new Picture(this, image, 0.3)
+        let that = this
+        this.canvas.addEventListener("click", function () {
+          if (!that.playing) {
+            that.play()
+          }
+        })
       }
 
       addMeteor() {
@@ -232,6 +259,31 @@ export default {
         this.bullets[name].y = undefined
         delete this.bullets[name]
       }
+
+      start() {
+        this.ship = new Spaceship(this)
+        draw()
+        this.play()
+      }
+
+      play() {
+        canvas.style.cursor = "none"
+        this.playing = true
+
+      }
+
+      pause() {
+        canvas.style.cursor = "auto"
+        this.playing = false
+        this.context.drawImage(
+          this.playButton.image,
+          this.playButton.x,
+          this.playButton.y,
+          this.playButton.height,
+          this.playButton.width
+        )
+
+      }
     }
 
 
@@ -244,24 +296,33 @@ export default {
       }
     }
 
-    let flag = true
     function draw() {
-        if (flag) {
+      if (game.playing) {
+        if (startMeteorGenerator) {
+          let blurFlag = true
+          window.onblur = function () { game.pause() }
           setInterval(() => {
-            game.addMeteor();
+            if (blurFlag) {
+              game.addMeteor();
+            }
           }, 3000);
-          flag = false
+          startMeteorGenerator = false
         }
         game.context.fillStyle = "rgb(0,0,0)"
         game.context.fillRect (0, 0, game.canvas.width, game.canvas.height)
         drawObjects(game.meteors)
         drawObjects(game.bullets)
+        game.context.fillStyle = "rgb(255,255,255)";
         game.context.drawImage(game.ship.image, game.ship.x , game.ship.y, game.ship.width, game.ship.height)
+        game.context.fillText(game.score, 5, game.canvas.height - 5, game.canvas.width);
+        
+      }
         requestAnimationFrame(draw)
     }
 
     let game = new Game(canvas, context)
-
+    game.start()
+    document.game = game
   }
 }
 </script>
