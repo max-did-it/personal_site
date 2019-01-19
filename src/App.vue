@@ -42,12 +42,11 @@ body
   position: relative
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
-  margin: 0 10% 0 0
+  margin: 0 10% 0 10%
   padding-top: 0
   color: white
-  // min-height: 100vh
   .container
-    height: 100vh
+    min-height: 100vh
     width: 100%
     display: flex
     flex-direction: column
@@ -65,8 +64,13 @@ body
         color: #C0A062
         margin-top: auto
         margin-left: auto
-        width: 30vw
-        font-size: 3vw
+        // width: 30vw
+        font-size: 3rem
+        font-weight: normal
         
         justify-self: self-end
+    .content
+      .body
+        display: flex
+        margin-top: 13%
 </style>

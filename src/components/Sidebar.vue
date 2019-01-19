@@ -40,6 +40,7 @@ export default {
   margin: 7.5% 0 0 1rem
   border-left: 1px solid #c0a062
   position: fixed
+  left: 0
   display: flex
   flex-direction: column
   justify-content: space-between

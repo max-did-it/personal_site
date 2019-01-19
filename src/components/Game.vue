@@ -186,7 +186,7 @@ export default {
         let object = this
 
         this.canvas.addEventListener("mousemove",function (event) {
-          object.setPosition(event.clientX - object.canvas.offsetLeft)
+          object.setPosition(event.clientX - object.canvas.offsetLeft - object.canvas.offsetParent.offsetLeft)
         }, false)
 
         this.canvas.addEventListener("click", function (event) {
@@ -200,12 +200,12 @@ export default {
 
       initXY(obj) {
         let object = this || obj
-        object.x = object.canvas.width/2 - object.width/3
+        object.x = object.canvas.width/2 - object.width/2
         object.y = object.canvas.height - object.height - object.canvas.height*0.1
       }
 
       setPosition(x) {
-        this.x  = x
+        this.x  = x - Math.round(this.width/2)
       }
 
       shoot() {

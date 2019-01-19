@@ -17,22 +17,21 @@ export default {
 
 <style lang="sass">
 .about
+  // flex-wrap: wrap
   flex-direction: row !important
+  // border-box: padding-box
+  width: 100%
   .game
-    // padding: 20rem
-    margin-left: 15%
+    order: 1
     margin-right: 5%
-    // border: 
     border: 1px dashed white
     border-top: none
     border-bottom: none
-    width: 30%
-    height: 100%
   .content
+    order: 2
     width: 70%
-    article
-      text-align: right
+
+    .body
       .text
-        float: right
-        margin-top: 13%
+        text-align: right
 </style>

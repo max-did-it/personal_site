@@ -20,27 +20,27 @@ export default {
 
     let dog = document.getElementById("dog")
     let block = document.getElementsByClassName("title")[0]
-      dog.style.top = 0 + "px"
-    dog.style.right = "15rem"
+    dog.style.top = block.offsetTop + "px"
+    dog.style.right = "17rem"
 
     let that = this
     window.addEventListener("scroll", function () {
-      console.log("hashchange");
       let block = document.getElementById(window.history.state)
       let title = block.getElementsByClassName("title")[0]
-      dog.style.top = block.offsetTop + "px"
-      dog.style.right = "15rem"
+      dog.style.top = title.offsetTop + "px"
+      dog.style.right = "17rem"
       that.fly.beginElement()
     }, false)
+    window.scroll()
   }
 }
 </script>
 <style lang="sass">
 #dog
-  transition: top 4s 0s ease
+  transition: top 4s 0s cubic-bezier(0.76, 1.71, 0.69, 0.87)
   position: absolute
-  width: 7.4rem
-  height: 5rem
+  width: 15rem
+  // height: rem
 </style>
 
 <template>

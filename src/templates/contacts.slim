@@ -3,4 +3,21 @@
       header
         h1.title
           | Contacts
-      article
+      .body
+        form.callback
+          label for="name"
+            | name
+          input.input#name placeholder="enter your name" type="text" name="name"/
+          label for="email"
+            | email
+          input.input#email placeholder="enter your email" type="email" name="email"/
+          label for="message"
+            | message
+          textarea.input#message placeholder="message" name="message" cols="30" rows="1"
+          label.dummy  
+          input type="submit" value="send message"/
+        .links
+          .link[v-for="link in links"]
+            img.icon :src="link.ico" alt="" srcset=""/
+            a.descript :href="link.href" :target="link.target"
+              | {{ link.text }}
