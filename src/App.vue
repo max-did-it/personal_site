@@ -102,5 +102,8 @@ body
         .title,.subtitle
           margin-right: 1rem
         .subtitle
+          font-size: 1.3rem !important
           margin-top: 5rem
+        .title
+          font-size: 1.9rem !important
 </style>
