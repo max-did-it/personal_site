@@ -93,4 +93,14 @@ body
     header
       .title,.subtitle
         margin-right: 1rem
+@media screen and (max-width: 425px)
+    #app 
+      margin: 0
+      padding-left: 2rem
+      width: calc(100% - 2rem)
+      header
+        .title,.subtitle
+          margin-right: 1rem
+        .subtitle
+          margin-top: 5rem
 </style>

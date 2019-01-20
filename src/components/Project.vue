@@ -40,7 +40,7 @@ export default {
   .project
     border: 1px solid  #C0A062
     width: 15vw
-    min-width: 250px
+    min-width: 200px
     min-height: 20vw
     margin: 3% 0 0 3%
     // margin-left: auto

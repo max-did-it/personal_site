@@ -61,7 +61,7 @@ export default {
   .projects
     .content
       .body
-        width: 100%
+        width: 90%
         justify-content: center
         align-content: center
         align-items: center

@@ -152,19 +152,25 @@ export default {
     .content
       .body
         flex-direction: column
-        align-items: center
+        align-self: flex-start
         .links
           order: 1
-          width: 100%
-          padding-left: 5rem
+          padding: 0
+          margin: 0
+          
+          // width: calc(40% - 5rem)
+          // padding-left: 5rem
         .callback
           order: 2
           flex-direction: column
           margin: 2rem 0
+          padding: 0
           align-items: center
-          width: 100%
+          width: 80%
           input , textarea
+            box-sizing: border-box
             margin: 0 auto
+            width: 60%
           input[type="submit"]
             width: 50%
 

@@ -47,9 +47,12 @@ export default {
 @media screen and (max-width: 900px)
   .about
     flex-direction: column !important
+    width: 100%
     .content
       order: 1
       width: 100%
+      padding: 0
+      margin: 0
     .game
       order: 2
       padding: 0
@@ -57,8 +60,12 @@ export default {
       width: 100%
       margin-top: 2rem
       // height: 100%
-@media screen and (max-width: 350)
-  .content
-    .body
+@media screen and (max-width: 425px)
+  .about
+    .game
+      margin-left: -1rem
+    .content
+      .body
+        width: 90%
 
 </style>
