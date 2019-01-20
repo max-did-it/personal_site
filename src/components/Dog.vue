@@ -17,18 +17,58 @@ export default {
     this.fly = document.getElementById("dog-fly")
     this.happy = document.getElementById("dog-happy")
 
+    function elemThroughPos() {
+      if (window.innerWidth > 1024) {
+        let block = document.getElementById(window.history.state)
+        return block.getElementsByClassName("title")[0]
+      } else  if (window.innerWidth > 900){
+        return document.getElementById(window.history.state)
+      } else {
+        let block = document.getElementById(window.history.state)
+        return block.getElementsByClassName("title")[0]
+      }
+    }
 
     let dog = document.getElementById("dog")
-    let block = document.getElementsByClassName("title")[0]
-    dog.style.top = block.offsetTop + "px"
-    dog.style.right = "17rem"
+    let block = elemThroughPos()
+    
+    function dogRight() {
+      if (window.innerWidth <= 768) {
+        return "60%"
+      } else if(window.innerWidth <= 900) {
+        return "50%"
+      } else if (window.innerWidth <= 1024) {
+        return "30%"
+      } else if (window.innerWidth > 1024) {
+        return "calc(-9% - 5.3rem)"
+      }
+    }
+
+    function dogTop(offsetTop) {
+        if (window.innerWidth <= 900) {
+        return (offsetTop + "px")
+      } else if (window.innerWidth <= 1024) {
+        return (offsetTop + "px")
+      } else if (window.innerWidth > 1024) {
+        return (offsetTop + "px")
+      }
+      if (window.innerWidth > 1024) {
+        return (offsetTop + "px")
+       } else if (window.innerWidth <= 1024) {
+        return (offsetTop + "px")
+      } else if (window.innerWidth <= 900) {
+        return (offsetTop + "px")
+      }
+    }
+    dog.style.right = dogRight()
+    dog.style.top = dogTop(block.offsetTop)
+    dog.style.width = "10rem"
 
     let that = this
     window.addEventListener("scroll", function () {
-      let block = document.getElementById(window.history.state)
-      let title = block.getElementsByClassName("title")[0]
-      dog.style.top = title.offsetTop + "px"
-      dog.style.right = "17rem"
+      let block = elemThroughPos()
+      dog.style.top = dogTop(block.offsetTop)
+      dog.style.right = dogRight()
       that.fly.beginElement()
     }, false)
     window.scroll()
@@ -40,7 +80,6 @@ export default {
   transition: top 4s 0s cubic-bezier(0.76, 1.71, 0.69, 0.87)
   position: absolute
   width: 15rem
-  // height: rem
 </style>
 
 <template>

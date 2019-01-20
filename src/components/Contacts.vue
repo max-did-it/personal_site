@@ -47,7 +47,7 @@ export default {
     .body
       .links
         display: flex
-        justify-content: center
+        // justify-content: flex-start
         align-items: center
         flex-direction: column
         flex-wrap: wrap
@@ -83,13 +83,14 @@ export default {
           
         label
           box-sizing: padding-box
-          padding-left: 20%
+          padding-right: 5%
           width: 30%
-          justify-self: flex-start
-          align-self: flex-start
+          text-align: right
+          justify-self: flex-end
+          // align-self: flex-end
           color: #c0a062
           font-size: 1.3rem
-          // margin-right: 1rem
+          margin-left: auto
         .input
           margin-bottom: 2rem
           box-sizing: border-box
@@ -106,7 +107,7 @@ export default {
           &::placeholder
             color: rgba(192, 160, 98, 0.5)
         textarea
-          height: 100% !important
+          height: 15rem !important
         input[type="submit"]
           margin: 0 auto
           width: 40%
@@ -117,6 +118,54 @@ export default {
           // font-weight: bold
           font-size: 1.05rem
           border-radius: 1.5rem
+@media screen and (max-width: 1200px)
+  .contacts
+    .content
+      .body
+        .links
+          align-items: flex-start
+        .callback
+          padding-right: 1rem
+          padding-left: 2rem
+          label
+            display: none
+            padding-right: 0
+            margin-right: 1rem
+          .input
+            width: 75%
+          input[type="submit"]
+            width: 75%
+            margin: 0
+            
+@media screen and (max-width: 900px)
+  .contacts
+    .content
+      .body
+        .callback
+          .input
+            width: 100% !important
+            margin-right: 1rem
+          input[type="submit"]
+            width: 60% !important
+@media screen and (max-width: 768px)
+  .contacts
+    .content
+      .body
+        flex-direction: column
+        align-items: center
+        .links
+          order: 1
+          width: 100%
+          padding-left: 5rem
+        .callback
+          order: 2
+          flex-direction: column
+          margin: 2rem 0
+          align-items: center
+          width: 100%
+          input , textarea
+            margin: 0 auto
+          input[type="submit"]
+            width: 50%
 
-          // padding: 1rem
 </style>

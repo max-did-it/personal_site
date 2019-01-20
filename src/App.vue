@@ -14,6 +14,11 @@ export default {
     'contacts': Contacts,
     'projects': Projects
   },
+  computed: {
+    dogIf() {
+      return (window.innerWidth > 670)
+    }
+  },
   name: 'App',
   mounted() {
     window.scrollTo( 0,document.getElementById(window.history.state).getBoundingClientRect().top)
@@ -28,21 +33,21 @@ html
 body 
   font-family: 'K2D', sans-serif
   background: black
-  padding: 0
-  margin: 0
+  display: flex
+
 
 * 
+  padding: 0
+  margin: 0
   -moz-user-select: none
   -ms-user-select: none
   -o-user-select: none
   -webkit-user-select: none
-.test
-  height: 50vh
 #app 
   position: relative
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
-  margin: 0 10% 0 10%
+  margin: 0 calc(10% + 3rem)
   padding-top: 0
   color: white
   .container
@@ -73,4 +78,19 @@ body
       .body
         display: flex
         margin-top: 13%
+@media screen and (max-width: 1200px)
+  #app
+@media screen and (max-width: 1024px)
+  #app 
+    margin-right: 2rem
+    header
+      .title,.subtitle
+        margin-right: 3rem
+@media screen and (max-width: 900px)
+  #app 
+    margin: 0 10%
+    width: 100%
+    header
+      .title,.subtitle
+        margin-right: 1rem
 </style>

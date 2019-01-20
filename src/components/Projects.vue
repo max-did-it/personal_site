@@ -43,15 +43,29 @@ export default {
 </script>
 <style lang="sass" scoped>
 .projects
-  // margin-left: 15%
   width: calc(100% - 15%)
   .content
     .body
+      margin-left: 15vw
       display: flex
       flex-wrap: wrap
       align-items: flex-start
       align-content: flex-start
+@media screen and (max-width: 1300px)
+  .projects
+    .content
+      .body
+        margin-left: 0
 
+@media screen and (max-width: 900px)
+  .projects
+    .content
+      .body
+        width: 100%
+        justify-content: center
+        align-content: center
+        align-items: center
+        flex-direction: column
 </style>
 
 <template>
@@ -63,7 +77,7 @@ export default {
         </h1>
       </header>
       <div class="body">
-        <project v-for="p in projects" :projectData="p"></project>
+        <project v-for="project in projects" :projectData="project" :key="project.header"></project>
       </div>
   </div>
 </div>

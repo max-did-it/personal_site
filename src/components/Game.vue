@@ -19,8 +19,25 @@ import pixel from "../assets/Game/pixel.png"
 export default {
   mounted() {
     let canvas = document.getElementById("spacegame")
-    canvas.width = window.innerWidth/3
-    canvas.height = window.innerHeight
+    if (window.innerWidth > 900) {
+      canvas.width = window.innerWidth/3
+      canvas.height = window.innerHeight
+    }
+    else {
+      canvas.width = window.innerWidth 
+      canvas.height = window.innerHeight
+    }
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 900) {
+        canvas.width = window.innerWidth/3 + "px"
+        canvas.height = window.innerHeight + "px"
+      }
+      else {
+        canvas.width = window.innerWidth + "px"
+        canvas.height = window.innerHeight + "px"
+      }
+    }, false)
+
     let context = canvas.getContext("2d")
     let requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
       window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
@@ -31,8 +48,6 @@ export default {
     font.onload = function (event) {
       document.fonts.add(font)
       context.font='15px PixelFont'
-      console.log("here");
-      
     }
     class Picture {
       constructor(game, image, ratio, x, y) {
@@ -55,8 +70,8 @@ export default {
 
       initSize(obj) {
           let object = this || obj
-          object.width = object.canvas.width*object.ratioSize
-          object.height = object.width*(object.image.height/object.image.width)
+          object.width = Math.round(object.canvas.offsetWidth*object.ratioSize)
+          object.height = Math.round(object.width*(object.image.height/object.image.width))
       }
 
       initXY(obj, x, y) {
@@ -186,7 +201,8 @@ export default {
         let object = this
 
         this.canvas.addEventListener("mousemove",function (event) {
-          object.setPosition(event.clientX - object.canvas.offsetLeft - object.canvas.offsetParent.offsetLeft)
+          let error = (window.innerWidth > 900) ? object.canvas.offsetParent.offsetLeft : 0
+          object.setPosition(event.clientX - error )
         }, false)
 
         this.canvas.addEventListener("click", function (event) {
@@ -200,12 +216,12 @@ export default {
 
       initXY(obj) {
         let object = this || obj
-        object.x = object.canvas.width/2 - object.width/2
-        object.y = object.canvas.height - object.height - object.canvas.height*0.1
+        object.x = Math.round(object.canvas.offsetWidth/2 - object.width/2)
+        object.y = Math.round(object.canvas.height - object.height - object.canvas.height*0.1)
       }
 
       setPosition(x) {
-        this.x  = x - Math.round(this.width/2)
+        this.x  = x -  Math.round(this.width/2)
       }
 
       shoot() {
@@ -314,7 +330,7 @@ export default {
         drawObjects(game.bullets)
         game.context.fillStyle = "rgb(255,255,255)";
         game.context.drawImage(game.ship.image, game.ship.x , game.ship.y, game.ship.width, game.ship.height)
-        game.context.fillText(game.score, 5, game.canvas.height - 5, game.canvas.width);
+        game.context.fillText(game.score, 20, game.canvas.height , game.canvas.width);
         
       }
         requestAnimationFrame(draw)

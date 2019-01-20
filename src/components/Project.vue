@@ -42,8 +42,8 @@ export default {
     width: 15vw
     min-width: 250px
     min-height: 20vw
-    margin: 3% 0 0 auto
-    margin-left: auto
+    margin: 3% 0 0 3%
+    // margin-left: auto
     padding: 0rem 3rem 0 3rem
     box-sizing: content-box
     transition: height 1s linear
@@ -118,4 +118,8 @@ export default {
         h3
           padding: 0
           margin: 0
+  @media screen and (max-width: 900px)
+    .project
+      margin: 1rem auto
+      width: 50%
 </style>

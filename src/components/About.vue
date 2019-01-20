@@ -18,6 +18,7 @@ export default {
 <style lang="sass">
 .about
   // flex-wrap: wrap
+  display: flex
   flex-direction: row !important
   // border-box: padding-box
   width: 100%
@@ -34,4 +35,30 @@ export default {
     .body
       .text
         text-align: right
+
+@media screen and (max-width: 1400px)
+  .about
+    .content
+      .body
+@media screen and (max-width: 1024px)
+  .about
+    .content
+      .body
+@media screen and (max-width: 900px)
+  .about
+    flex-direction: column !important
+    .content
+      order: 1
+      width: 100%
+    .game
+      order: 2
+      padding: 0
+      margin: 0
+      width: 100%
+      margin-top: 2rem
+      // height: 100%
+@media screen and (max-width: 350)
+  .content
+    .body
+
 </style>
