@@ -27,16 +27,6 @@ export default {
       canvas.width = window.innerWidth 
       canvas.height = window.innerHeight
     }
-    window.addEventListener("resize", function () {
-      if (window.innerWidth > 900) {
-        canvas.width = window.innerWidth/3 + "px"
-        canvas.height = window.innerHeight + "px"
-      }
-      else {
-        canvas.width = window.innerWidth + "px"
-        canvas.height = window.innerHeight + "px"
-      }
-    }, false)
 
     let context = canvas.getContext("2d")
     let requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
