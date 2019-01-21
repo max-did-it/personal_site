@@ -14,17 +14,21 @@ import MeteorFrame4 from "../assets/Game/Meteor-Frame4.png"
 import MeteorFrame5 from "../assets/Game/Meteor-Frame5.png"
 import BulletFrame from "../assets/Game/Shot-Frame.png"
 import PlayButtonFrame from "../assets/Game/Play-Button.png"
-import GameFont from "../assets/Game/GameFont.ttf"
 import pixel from "../assets/Game/pixel.png"
 export default {
   mounted() {
+    function random(max, min) {
+      min = min || 0
+      
+      return chance.integer({ min: min, max: max })
+    }
     let canvas = document.getElementById("spacegame")
     if (window.innerWidth > 900) {
       canvas.width = window.innerWidth/3
       canvas.height = window.innerHeight
     }
     else {
-      canvas.width = window.innerWidth 
+      canvas.width = window.innerWidth
       canvas.height = window.innerHeight
     }
 
@@ -32,13 +36,13 @@ export default {
     let requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
       window.webkitRequestAnimationFrame || window.msRequestAnimationFrame
     let startMeteorGenerator = true
-    let font = new FontFace('PixelFont', GameFont)
-    console.log(font);
+    // document.pixelFont = new FontFace('PixelFont',GameFont) 
+    // document.fonts.add(document.pixelFont)
     
-    font.onload = function (event) {
-      document.fonts.add(font)
-      context.font='15px PixelFont'
-    }
+    // font.onload = function (event) {
+    //   document.fonts.add(font)
+    //   // context.font='15px PixelFont'
+    // }
     class Picture {
       constructor(game, image, ratio, x, y) {
         this.game = game
@@ -82,8 +86,10 @@ export default {
         this.ratioSize = parent.ratioSize/3
         this.image.src = BulletFrame
         this.path = setInterval(() => {
-          this.y -= this.speed
-          if ((this.y  + this.height) < 0) {this.stopBullet()}
+          if (this.game.playing) {
+            this.y -= this.speed
+            if ((this.y  + this.height) < 0) {this.stopBullet()}
+          }
         }, 20);
       }
 
@@ -124,39 +130,41 @@ export default {
         this.setCurrentImage()
         this.flag = true
         this.path = setInterval(() => {
-          this.y += 1
+          if (this.game.playing) {
+            this.y += 1
 
-          // Check battleground bottom border
-          if ((this.y - this.height) > this.canvas.height) {this.stopMeteor()}
+            // Check battleground bottom border
+            if ((this.y - this.height) > this.canvas.height) {this.stopMeteor()}
 
-          // Check collision with bullet
-          for (const inx in this.game.bullets) {
-            if (this.game.bullets.hasOwnProperty(inx)) {
-              const bullet = this.game.bullets[inx];
-              
-              let bx1 = bullet.x, 
-                  bx2 = bullet.x + bullet.width,
-                  by1 = bullet.y,
-                  by2 = bullet.y + bullet.height
-              
-              let mx1 = this.x,
-                  mx2 = this.x + this.width,
-                  my1 = this.y,
-                  my2 = this.y + this.height
-              
-              let conditionX = ((bx1 >= mx1) && (bx1 <= mx2)) || ((bx2 <= mx2) && (bx2 >= mx1))
-              let conditionY = ((by1 <= my2 ) && (by1 >= my1)) || ((by2 <= my2) && (by2 >= my1))
-              if (conditionY && conditionX) {
-                this.game.removeBullet(inx)
-                if (this.currentFrameinx < this.framesCount) { 
-                  this.currentFrameinx += 1
-                  this.setCurrentImage()
-                } else {
-                  this.stopMeteor(inx)
-                  this.game.score += 10
+            // Check collision with bullet
+            for (const inx in this.game.bullets) {
+              if (this.game.bullets.hasOwnProperty(inx)) {
+                const bullet = this.game.bullets[inx];
+                
+                let bx1 = bullet.x, 
+                    bx2 = bullet.x + bullet.width,
+                    by1 = bullet.y,
+                    by2 = bullet.y + bullet.height
+                
+                let mx1 = this.x,
+                    mx2 = this.x + this.width,
+                    my1 = this.y,
+                    my2 = this.y + this.height
+                
+                let conditionX = ((bx1 >= mx1) && (bx1 <= mx2)) || ((bx2 <= mx2) && (bx2 >= mx1))
+                let conditionY = ((by1 <= my2 ) && (by1 >= my1)) || ((by2 <= my2) && (by2 >= my1))
+                if (conditionY && conditionX) {
+                  this.game.removeBullet(inx)
+                  if (this.currentFrameinx < this.framesCount) { 
+                    this.currentFrameinx += 1
+                    this.setCurrentImage()
+                  } else {
+                    this.stopMeteor(inx)
+                    this.game.score += 10
+                  }
                 }
               }
-            }
+            }            
           }
         }, 1);
       }
@@ -230,6 +238,18 @@ export default {
         this.bullets = []
         this.playing = false
         this.score = 0
+        this.positionChangeFlag = true
+        this.stars = new Array(20).fill().map(function (element) {
+          element = {}
+          element.size = 1,
+          element.x = random(canvas.offsetWidth)
+          element.y = random(canvas.offsetHeight)
+          element.color = "#FFFFFF"
+          element.shadowColor='#0000FF';
+          element.shadowBlur= 20;
+          element.y = random(canvas.height)
+          return element
+        })
         let image = new Image()
         image.src = PlayButtonFrame
         this.playButton = new Picture(this, image, 0.3)
@@ -241,6 +261,35 @@ export default {
         })
       }
 
+      background() {
+        for (let inx = 0; inx < this.stars.length; inx++) {
+          const star = this.stars[inx]
+          context.fillStyle = star.color
+          context.shadowColor = star.shadowColor
+          context.shadowBlur = star.shadowBlur
+          context.fillRect(star.x, star.y, star.size, star.size)
+        }
+        if (this.positionChangeFlag) {
+          setInterval(() => {
+            if (this.playing) {
+              this.moveStars()
+            }
+          }, 1);
+          this.positionChangeFlag = false
+        }
+      }
+
+      moveStars() {
+        for (let inx = 0; inx < this.stars.length; inx++) {
+          const star = this.stars[inx];
+          if (star.y <= 0 || star.y >= canvas.offsetHeight) {
+            star.y = random(canvas.offsetHeight)
+            star.x = random(canvas.offsetWidth)
+          } else {
+            star.y += 1
+          }
+        }
+      }
       addMeteor() {
         this.meteorsCount += 1
         name = "Meteor" + this.meteorsCount
@@ -305,10 +354,9 @@ export default {
     function draw() {
       if (game.playing) {
         if (startMeteorGenerator) {
-          let blurFlag = true
           window.onblur = function () { game.pause() }
           setInterval(() => {
-            if (blurFlag) {
+            if (game.playing) {
               game.addMeteor();
             }
           }, 3000);
@@ -316,11 +364,15 @@ export default {
         }
         game.context.fillStyle = "rgb(0,0,0)"
         game.context.fillRect (0, 0, game.canvas.width, game.canvas.height)
+        game.background()
+        game.context.shadowColor = "#FFFFFF"
+        game.context.shadowBlur = 0
         drawObjects(game.meteors)
         drawObjects(game.bullets)
-        game.context.fillStyle = "rgb(255,255,255)";
         game.context.drawImage(game.ship.image, game.ship.x , game.ship.y, game.ship.width, game.ship.height)
-        game.context.fillText(game.score, 20, game.canvas.height , game.canvas.width);
+        game.context.fillStyle = "rgb(255,255,255)";
+        game.context.font = "1.5rem PixelFont"
+        game.context.fillText( "scrore:   " + game.score,game.canvas.width*0.05,game.canvas.height*0.95,);
         
       }
         requestAnimationFrame(draw)

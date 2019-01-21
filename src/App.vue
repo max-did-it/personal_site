@@ -5,6 +5,8 @@ import Dog from './components/Dog'
 import About from './components/About'
 import Projects from './components/Projects'
 import Contacts from './components/Contacts'
+import Background from './components/SpaceBackground'
+
 export default {
   mixins: [template],
   components: {
@@ -12,7 +14,8 @@ export default {
     'dog': Dog,
     'about': About,
     'contacts': Contacts,
-    'projects': Projects
+    'projects': Projects,
+    'background': Background
   },
   computed: {
     dogIf() {
@@ -25,8 +28,12 @@ export default {
   }
 }
 </script>
-
 <style lang="sass">
+@font-face
+  font-family: PixelFont
+  src: url('./assets/Game/GameFont.ttf')
+#bitch
+  font-family: PixelFont
 @import url('https://fonts.googleapis.com/css?family=K2D:400,700')
 html
   scroll-behavior: smooth

@@ -80,6 +80,7 @@ export default {
   transition: top 4s 0s cubic-bezier(0.76, 1.71, 0.69, 0.87)
   position: absolute
   width: 15rem
+  overflow: visible
 </style>
 
 <template>
