@@ -1,0 +1,42 @@
+
+version: '3'
+services:
+  # db:
+  #   container_name: note_database
+  #   image: postgres:10
+  # backend:
+  #   container_name: note_server
+  #   build:
+  #     context: .
+  #     dockerfile: Backend.dockerfile
+  #   volumes:
+  #     - ./backend/:/codenote
+  #   entrypoint:
+  #     - ./entrypoint.sh
+  #   links:
+  #     - db
+  #   environment: 
+  #     - FIRST
+  #   ports:
+  #     - "3000:3000"
+  frontend:
+    container_name: selfcardFront
+    build: 
+      context: .
+      dockerfile: Frontend.dockerfile
+    volumes:
+      - ./frontend/:/frontend/
+  nginx:
+    restart: always
+    container_name: selfcardNginx
+    build:
+      context: .
+      dockerfile: Nginx.dockerfile
+    ports: 
+      - 80:80
+      # - 443:443
+    volumes:
+      # - ./docker/config/certs:/etc/letsencrypt
+      # - ./docker/config/certs-data:/var/lib/letsencrypt
+      # - ./docker/config/nginx:/etc/nginx/conf.d
+      # - ./frontend/dist:/usr/share/nginx/html

@@ -9,7 +9,7 @@ export default {
   mixins: [template],
   data () {
     return {
-      about: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis reprehenderit ut facere consequuntur cumque! Provident at magnam quidem doloremque, doloribus eum repudiandae unde ipsam explicabo consequatur eveniet veritatis nisi animi?Quam enim quis quia repudiandae doloribus quidem recusandae, autem distinctio quo. Natus blanditiis quo eaque quas magnam! Incidunt molestiae ipsa deleniti, quisquam dolorem odio enim quibusdam nisi reiciendis illo! Velit?Voluptate libero placeat iusto magnam rerum consectetur adipisci nostrum perferendis consequatur ut ad fugiat minima iste mollitia, ab sint impedit saepe! Impedit dolor dolorum eligendi debitis. Consectetur culpa asperiores rem?Aliquid similique aspernatur maxime aperiam nam deserunt asperiores rem doloremque fuga id. A velit quisquam rerum optio magnam? Maiores, amet! Ut possimus asperiores inventore fugiat officiis illo quo optio corrupti!"      
+      about: "Hello! I am a full-stack web developer. Previously engaged in the development and administration of systems based on 1C. But I left this area to more eloquent programming languages like python, ruby and java script (in particular, I love the vuejs framework). I would like to learn and work with golang."      
     }
   },
 }
