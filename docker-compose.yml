@@ -39,4 +39,5 @@ services:
       # - ./docker/config/certs:/etc/letsencrypt
       # - ./docker/config/certs-data:/var/lib/letsencrypt
       # - ./docker/config/nginx:/etc/nginx/conf.d
+      # - ./nginx.conf:/etc/nginx/conf.d/selfcard.conf
       - ./frontend/dist:/usr/share/nginx/html
