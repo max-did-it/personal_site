@@ -1,0 +1,1 @@
+yarn build && chmod -R 777 .
