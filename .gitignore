@@ -1,8 +1,8 @@
-/frontend.DS_Store
-/forntend/node_modules/
-/frontend/dist/
-/frontend/npm-debug.log*
-/frontend/yarn-debug.log*
-/frontend/yarn-error.log*
+frontend.DS_Store
+forntend/node_modules/
+frontend/dist/
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
 
 .vscode
