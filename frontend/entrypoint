@@ -1,2 +1,2 @@
 #!/bin/bash
-yarn build && chmod -R 777 .
+yarn install && yarn build && chmod -R 777 .
