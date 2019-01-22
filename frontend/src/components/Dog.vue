@@ -13,7 +13,10 @@ export default {
     }
   },
   mounted() {
-    
+    if (!window.history.state) {
+      window.history.pushState("about", "/#about")
+    }
+
     this.fly = document.getElementById("dog-fly")
     this.happy = document.getElementById("dog-happy")
 
