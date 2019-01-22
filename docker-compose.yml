@@ -1,0 +1,22 @@
+
+version: '3'
+services:
+  frontend:
+    container_name: selfcardFront
+    build: 
+      context: .
+      dockerfile: Frontend.dockerfile
+    entrypoint: 
+      - ./entrypoint
+    volumes:
+      - ./frontend/:/frontend/
+  nginx:
+    restart: always
+    container_name: selfcardNginx
+    build:
+      context: .
+      dockerfile: Nginx.dockerfile
+    ports: 
+      - 80:80
+    volumes:
+      - ./frontend/dist:/usr/share/nginx/html

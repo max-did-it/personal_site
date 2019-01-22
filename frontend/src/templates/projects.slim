@@ -1,0 +1,7 @@
+.projects#projects
+  .content
+      header
+        h1.title
+          | Projects
+      article
+        <project v-for="p in projects" projectData="p.href"></project>
