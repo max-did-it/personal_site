@@ -2,7 +2,6 @@
 export default {
   props: ['projectData'],
   mounted() {
-    console.log("Given data " + this.projectData);
   }
 }
 </script>
