@@ -10,6 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "jquery": "^3.3.1",
     "slim-lang-loader": "0.0.7",
     "vue": "^2.5.2",
     "vue-jquery": "^1.0.6",

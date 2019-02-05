@@ -23,10 +23,10 @@ func mailHandler(w http.ResponseWriter, r *http.Request) {
 		data, _ := json.Marshal(rawDataInterface)
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(data)
-		http.Redirect(w, r, "/", 301)
-		log.Print("redirected\n")
+		// http.Redirect(w, r, "/", 301)
 	default:
 		http.Redirect(w, r, "/", 301)
+		log.Print("redirected\n")
 	}
 }
 

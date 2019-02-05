@@ -1,19 +1,42 @@
 .contacts#contacts
+  .form_submited v-if="popFormFlagSuccess"
+    .content
+      h1.header
+        | Thanks.
+      p.text
+        | Through little time i&nbsp;answer&nbsp;you.
+      .close @click="popFormFlagSuccess=false"
+        | JUST CLOSE IT
+  .form_submited v-if="popFormFlagFailed"
+    .content
+      h1.header
+        | Sorry =(
+      p.text
+        | Somthing wrong. Try to contact with me through other channels.
+      .close @click="popFormFlagFailed=false"
+        | JUST CLOSE IT
+  .form_submited v-if="popFormFlagLoading"
+    .content
+      .lds-ring
+        div
+        div
+        div
+        div
   .content
       header
         h1.title
           | Contacts
       .body
-        form.callback
+        form.callback#callbackForm @submit.prevent="send_form"
           label for="name"
             | name
-          input.input#name placeholder="enter your name" type="text" name="name"/
+          input.input#name required="required" placeholder="enter your name" v-model="form.name" type="text" name="name"/
           label for="email"
             | email
-          input.input#email placeholder="enter your email" type="email" name="email"/
+          input.input#email required="required"  placeholder="enter your email" v-model="form.email" type="email" name="email"/
           label for="message"
             | message
-          textarea.input#message placeholder="message" name="message" cols="30" rows="1"
+          textarea.input#message required="required" placeholder="message" v-model="form.message" name="message" cols="30" rows="1"
           label.dummy  
           input type="submit" value="send message"/
         .links
