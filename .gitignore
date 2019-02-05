@@ -4,5 +4,5 @@ frontend/dist/
 frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
-
+docker/mailer.env
 .vscode

@@ -11,6 +11,8 @@ services:
     volumes:
       - ./frontend/:/frontend/
   nginx:
+    depends_on: 
+      [frontend]
     restart: always
     container_name: selfcardNginx
     build:
@@ -20,3 +22,16 @@ services:
       - 80:80
     volumes:
       - ./frontend/dist:/usr/share/nginx/html
+    links: 
+      [backend]
+  backend: 
+    container_name: selfcardBackend
+    build:
+      context: .
+      dockerfile: Backend.dockerfile
+    ports: 
+      - 127.0.0.1:8080:8080
+    env_file: 
+      - ./docker/mailer.env
+    entrypoint: 
+      - /go/bin/selfcard_service
