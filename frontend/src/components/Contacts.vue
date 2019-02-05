@@ -5,10 +5,20 @@ import icoGit from '../assets/Contacts/gitlab.svg'
 import icoVk from '../assets/Contacts/vk.svg'
 import icoTel from '../assets/Contacts/telegram.svg'
 import icoMail from '../assets/Contacts/mail.svg'
+import jq from 'jquery'
 export default {
   mixins: [template],
   data () {
     return {
+      popFormFlagLoading: false,
+      popFormFlagSuccess: false,
+      popFormFlagFailed: false,
+      form: {
+        name: '',
+        email: '',
+        message: '',
+
+      },
       links: [
         {
           ico: icoGit,
@@ -36,13 +46,112 @@ export default {
         },                        
       ]
     }
-  }
+  },
+  methods: {
+    send_form(e) {
+      let that = this
+      that.popFormFlagLoading = true
+      jq.ajax({
+        type: "POST",
+        url: "/callback",
+        data: JSON.stringify({
+          name: that.form.name,
+          email: that.form.email,
+          message: that.form.message
+        }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+          
+          // console.log("Fuck yeah");
+          // console.log(response.success);
+          that.popFormFlagLoading = false
+          if (response.success) {
+            that.form.name = ''
+            that.form.email = ''
+            that.form.message = ''
+            that.popFormFlagSuccess = true
+          } else {
+            that.popFormFlagFailed = true
+          }
+        },
+        error: function (response) {
+          that.popFormFlagLoading = false
+          that.popFormFlagFailed = true
+        },
+        
+      });
+
+      return false
+    }
+  },
 }
 </script>
 
 <style lang="sass">
+.lds-ring 
+  display: inline-block 
+  position: relative 
+  width: 64px 
+  height: 64px 
+  div 
+    box-sizing: border-box 
+    display: block 
+    position: absolute 
+    width: 51px 
+    height: 51px 
+    margin: 6px 
+    border: 6px solid #fff
+    border-radius: 50% 
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite 
+    border-color: #fff transparent transparent transparent 
+    &:nth-child(1) 
+      animation-delay: -0.45s 
+    &:nth-child(2) 
+      animation-delay: -0.3s 
+    &:nth-child(3) 
+      animation-delay: -0.15s 
+@keyframes lds-ring 
+  0%
+    transform: rotate(0deg) 
+  100% 
+    transform: rotate(360deg) 
 .contacts
   // background: white !important
+
+  .form_submited
+    position: fixed
+    top: 0
+    left: 0
+    display: flex
+    justify-content: center
+    align-items: center
+    z-index: 10000
+    width: 100vw
+    height: 100vh
+    .content
+      border: solid #C0A062
+      padding: 1.5rem 
+      display: flex
+      justify-content: center
+      align-items: center
+      flex-direction: column
+      background: black
+      margin: 1rem
+      .header
+        padding-bottom: 1rem
+      .text
+        font-size: 1.5rem
+      .close
+        margin: 2rem
+        padding: 0 1.5rem
+        color: black
+        border-radius: 1.5rem
+        text-align: center
+        font-weight: bold
+        font-size: 1.5rem
+        background: #C0A062
+        cursor: pointer
   .content
     .body
       .links
